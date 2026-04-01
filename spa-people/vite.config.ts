@@ -7,7 +7,8 @@ import tailwindcss from '@tailwindcss/vite'
 import vitePluginSingleSpa from 'vite-plugin-single-spa'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'serve' ? 'http://localhost:8080/' : '/',
   plugins: [
     vitePluginSingleSpa({
       type: 'mife',
@@ -15,7 +16,6 @@ export default defineConfig({
       spaEntryPoints: 'src/main.ts',
     }),
     vue(),
-    vueDevTools(),
     tailwindcss(),
   ],
   resolve: {
@@ -37,4 +37,4 @@ export default defineConfig({
       },
     },
   },
-})
+}))

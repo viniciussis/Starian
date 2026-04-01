@@ -13,6 +13,14 @@ const applications = constructApplications({
   routes,
   loadApp({ name }) {
     console.log(`[Starian] Solicitando carga do app: ${name}`);
+
+    if (name === "@starian/spa-people") {
+      return import(/* webpackIgnore: true */ "http://localhost:8080/src/main.ts" as any).catch((err) => {
+        console.warn(`[Starian] Fallback para SystemJS no app ${name}`, err);
+        return (System.import(name) as any);
+      });
+    }
+
     return (System.import(name) as any).catch((err: unknown) => {
       console.error(`[Starian] Falha crítica ao carregar ${name}:`, err);
       throw err;
