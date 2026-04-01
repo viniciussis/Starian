@@ -1,125 +1,63 @@
-# Starian AI Force — Gestão Stelar de Talentos
+# Starian — Microfrontend Orchestration & Semantic AI Search
 
-> **Desafio Técnico Starian** — Sistema de gestão de profissionais com arquitetura de **Microfrontends**, BFF em **NestJS** e busca semântica via **IA Vetorial (Google Gemini)**.
-
----
-
-## 🚀 Guia Rápido: Como Rodar (Modo Standalone)
-
-Se você está em ambiente Windows ou quer apenas testar as funcionalidades sem a complexidade do orquestrador, siga estes passos para rodar o app diretamente na porta **8080**.
-
-### 1. Requisitos
-- Node.js 20+
-- Docker Desktop (para o Banco de Dados)
-- Chave de API do Gemini (`GEMINI_API_KEY`)
-
-### 2. Configuração do Ambiente
-Crie um arquivo `.env` na pasta `api/` com os seguintes dados:
-```env
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_NAME=starian_db
-GEMINI_API_KEY=SUA_CHAVE_AQUI
-PORT=3000
-```
-
-### 3. Subir o Banco de Dados
-Na raiz do projeto, suba apenas o serviço de banco:
-```bash
-docker-compose up -d db
-```
-
-### 4. Rodar o Backend (API)
-Em um novo terminal, na raiz do projeto:
-```bash
-npm install
-npm run start:dev -w api
-```
-
-### 5. Rodar o Frontend (SPA)
-Em outro terminal, na raiz do projeto:
-```bash
-npm run dev -w spa-people
-```
-
-### 6. Acessar a Aplicação
-Abra o seu navegador em:
-👉 **http://localhost:8080**
-
----
+O **Starian** é um portal mestre de arquitetura avançada que utiliza o padrão de **Microfrontends** para orquestrar múltiplos ecossistemas de forma modular e resiliente. O projeto foca em escalabilidade, utilizando tecnologias modernas de frontend e backend para entregar uma experiência de busca semântica baseada em inteligência artificial.
 
 ## 🏗️ Arquitetura do Sistema
 
-```mermaid
-graph TD
-    User((Usuário)) --> Portal[Portal Mestre - Single-SPA 6]
-    Portal --> Mife[Microfrontend People - Vue 3]
-    Mife --> BFF[BFF API - NestJS]
-    BFF --> Gemini[Google Gemini AI - Embeddings]
-    BFF --> DB[(PostgreSQL + pgvector)]
-```
+O ecossistema é dividido em três pilares fundamentais, cada um operando em seu próprio ciclo de vida:
 
-### Diferenciais Técnicos:
-- **Orquestração Single-SPA**: Carregamento dinâmico sem acoplamento de build.
-- **Busca Semântica Híbrida**: Bio de profissionais convertida em vetores (`text-embedding-001`) para busca por similaridade de cosseno.
-- **UX Premium**: Design "Ultra Dark" com glassmorphism e máscaras de formulário reativas.
-- **Resiliência**: Fallback automático para busca textual (`ILIKE`) caso a IA esteja indisponível.
+1.  **Orquestrador (Root Config)**: Desenvolvido com **Webpack 5** e **Single-SPA**, atua como o portal mestre, gerenciando o roteamento e a montagem dinâmica dos microfrontends.
+2.  **Microfrontend People (spa-people)**: Aplicação **Vue 3** (Vite 8) modularizada que consome a API REST e oferece uma interface de gestão fluida.
+3.  **Backend API (NestJS)**: Servidor enterprise-grade integrando **TypeORM** e **PgVector** para busca vetorial de alta performance.
 
----
+## 🧠 Recursos de IA e Busca Semântica
 
-## 🛠️ Stack Tecnológico
+O diferencial técnico do projeto reside na sua camada de **Inteligência Artificial**:
+-   **Embeddings Vetoriais**: Utilizamos a **Google Gemini API** para converter descrições bio-bibliográficas em vetores matemáticos.
+-   **Busca Híbrida**: O sistema realiza buscas semânticas (pelo significado das palavras) combinadas com buscas de texto convencionais no PostgreSQL, permitindo encontrar pessoas por "conceitos" e não apenas por palavras-chave exatas.
 
-| Camada | Tecnologias |
-|---|---|
-| **Orquestrador** | Single-SPA 6 + Webpack 5 + SystemJS |
-| **Microfrontend** | Vue 3 (Composition API + `<script setup>`) + Vite 8 |
-| **Estilo** | Tailwind CSS v4 (Starian Brand) |
-| **BFF** | NestJS + TypeORM |
-| **Banco de Dados** | PostgreSQL 15 + pgvector |
-| **IA** | Google Gemini API (Model: `gemini-embedding-001`) |
-| **Infra** | Docker Compose |
+## 🛠️ Stack Tecnológica
 
----
+-   **Frontend**: Vue 3 (Composition API), Vite, Single-SPA, Tailwind CSS.
+-   **Backend**: NestJS, TypeScript, TypeORM, PostgreSQL + PgVector.
+-   **IA**: Gemini Pro / Flash (Modelos de Embedding).
+-   **Infraestrutura**: Docker & Docker Compose, Nginx.
 
-## 🧠 Busca Inteligente com IA
+## 🚀 Como Executar
 
-A `bio` de cada profissional é processada para gerar um **vetor de 768 dimensões**, permitindo encontrar talentos pelo contexto:
-- **Exemplo**: Ao buscar por *"Cientista de Dados"*, o sistema encontrará profissionais com bio sobre *"algoritmos"*, *"machine learning"* ou *"estatística"*, mesmo que o termo exato não esteja presente.
-- **Re-ranking**: Resultados com termos exatos no nome ou Bio são promovidos para garantir o equilíbrio entre contexto e precisão.
+### Pré-requisitos
+-   Node.js 20+
+-   Docker e Docker Compose
+-   Chave de API do Google Gemini (GEMINI_API_KEY)
 
----
+### Configuração de Ambiente
+1.  Clone o repositório.
+2.  Crie um arquivo `.env` na raiz (e na pasta `api/`) seguindo o modelo `.env.example`:
+    ```env
+    DATABASE_URL=postgres://user:pass@localhost:5432/starian
+    GEMINI_API_KEY=sua_chave_aqui
+    ```
 
-## 🧪 Testes e Qualidade
-
-O sistema conta com **31 testes unitários** focados na integridade da lógica de negócios:
-- Validação manual de CPF e E-mail.
-- Casos de borda no `PeopleService` (duplicatas, fallbacks de IA).
-- Simulação de fluxos de Embedding no `AiService`.
-
+### Rodando via Docker (Recomendado)
 ```bash
-# Rodar testes do BFF
-npm run test -w api
+docker-compose up -d --build
 ```
+Acesse o portal em: [http://localhost:9000](http://localhost:9000)
+
+### Rodando em Desenvolvimento (Local)
+1.  Suba o banco de dados: `docker-compose up -d db`
+2.  Instale as dependências: `npm install`
+3.  Inicie a API: `npm run start:dev -w api`
+4.  Inicie o Microfrontend: `npm run dev -w spa-people`
+5.  Inicie o Orquestrador: `npm run start -w root-config`
 
 ---
 
-## 🐳 Docker (Ambiente Inteiro)
-Para rodar a arquitetura completa com orquestração automática:
-1. Pare todos os terminais locais.
-2. Certifique-se de que as portas 3000, 8080 e 9000 estão livres.
-3. Rode `docker-compose up --build`.
-4. Acesse via porta `9000` (Portal Master).
+## 💎 Qualidade de Código e Padrões
+-   **S.O.L.I.D**: Princípios aplicados nos serviços NestJS.
+-   **Repository Pattern**: Isolação de dados na API.
+-   **Componentização Modular**: UI reutilizável no Vue 3.
+-   **Clean Architecture**: Divisão clara de responsabilidades entre orquestração, lógica e dados.
 
 ---
-
-## 📁 Estrutura do Monorepo
-```text
-starian/
-├── api/                    # BFF NestJS + IA
-├── spa-people/             # Microfrontend Vue 3 (Gestão de Talentos)
-├── root-config/            # Orquestrador Single-SPA (O Maestro)
-├── docker-compose.yml      # Infra completa
-└── .env                    # Variáveis Ambientais
-```
+Desenvolvido com maestria técnica focado em escalabilidade e modernidade.🌌🛰️

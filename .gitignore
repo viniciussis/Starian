@@ -27,3 +27,13 @@ coverage/
 
 # Arquivos gerados pelo Vite/Webpack
 *.local
+
+# Agentes e Metadados de IA
+.agent/
+.agents/
+brain/
+implementation_plan.md
+task.md
+walkthrough.md
+debug_*.webp
+finding_*.webp
