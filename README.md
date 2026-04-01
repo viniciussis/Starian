@@ -1,6 +1,6 @@
 # Starian AI Force — Gestão Stelar de Talentos
 
-Bem-vindo ao **Starian AI Force**, uma plataforma de alta performance para gestão de talentos, integrada com Busca Semântica via IA (Google Gemini) e arquitetura de Microfrontends.
+> **Desafio Técnico Starian** — Sistema de gestão de profissionais com arquitetura de **Microfrontends**, BFF em **NestJS** e busca semântica via **IA Vetorial (Google Gemini)**.
 
 ---
 
@@ -50,22 +50,76 @@ Abra o seu navegador em:
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
-- **Frontend**: Vue 3 (Composition API), Vite, Tailwind CSS v4, Single-SPA.
-- **Backend**: NestJS, TypeORM, PostgreSQL.
-- **IA**: Google Gemini Pro (Embeddings) e Busca Vetorial via `pgvector`.
-- **Qualidade**: Vitest, Jest, ESLint, Prettier.
+## 🏗️ Arquitetura do Sistema
+
+```mermaid
+graph TD
+    User((Usuário)) --> Portal[Portal Mestre - Single-SPA 6]
+    Portal --> Mife[Microfrontend People - Vue 3]
+    Mife --> BFF[BFF API - NestJS]
+    BFF --> Gemini[Google Gemini AI - Embeddings]
+    BFF --> DB[(PostgreSQL + pgvector)]
+```
+
+### Diferenciais Técnicos:
+- **Orquestração Single-SPA**: Carregamento dinâmico sem acoplamento de build.
+- **Busca Semântica Híbrida**: Bio de profissionais convertida em vetores (`text-embedding-001`) para busca por similaridade de cosseno.
+- **UX Premium**: Design "Ultra Dark" com glassmorphism e máscaras de formulário reativas.
+- **Resiliência**: Fallback automático para busca textual (`ILIKE`) caso a IA esteja indisponível.
 
 ---
 
-## 🧪 Testes
-Para garantir a integridade da lógica de negócios e da IA, rode:
+## 🛠️ Stack Tecnológico
+
+| Camada | Tecnologias |
+|---|---|
+| **Orquestrador** | Single-SPA 6 + Webpack 5 + SystemJS |
+| **Microfrontend** | Vue 3 (Composition API + `<script setup>`) + Vite 8 |
+| **Estilo** | Tailwind CSS v4 (Starian Brand) |
+| **BFF** | NestJS + TypeORM |
+| **Banco de Dados** | PostgreSQL 15 + pgvector |
+| **IA** | Google Gemini API (Model: `gemini-embedding-001`) |
+| **Infra** | Docker Compose |
+
+---
+
+## 🧠 Busca Inteligente com IA
+
+A `bio` de cada profissional é processada para gerar um **vetor de 768 dimensões**, permitindo encontrar talentos pelo contexto:
+- **Exemplo**: Ao buscar por *"Cientista de Dados"*, o sistema encontrará profissionais com bio sobre *"algoritmos"*, *"machine learning"* ou *"estatística"*, mesmo que o termo exato não esteja presente.
+- **Re-ranking**: Resultados com termos exatos no nome ou Bio são promovidos para garantir o equilíbrio entre contexto e precisão.
+
+---
+
+## 🧪 Testes e Qualidade
+
+O sistema conta com **31 testes unitários** focados na integridade da lógica de negócios:
+- Validação manual de CPF e E-mail.
+- Casos de borda no `PeopleService` (duplicatas, fallbacks de IA).
+- Simulação de fluxos de Embedding no `AiService`.
+
 ```bash
+# Rodar testes do BFF
 npm run test -w api
 ```
 
-## 🐳 Docker (Produção)
-Para rodar a arquitetura completa em containers:
+---
+
+## 🐳 Docker (Ambiente Inteiro)
+Para rodar a arquitetura completa com orquestração automática:
 1. Pare todos os terminais locais.
-2. Rode `docker-compose up --build`.
-3. Acesse via porta `9000` (Orquestrador) ou `8080` (Standalone).
+2. Certifique-se de que as portas 3000, 8080 e 9000 estão livres.
+3. Rode `docker-compose up --build`.
+4. Acesse via porta `9000` (Portal Master).
+
+---
+
+## 📁 Estrutura do Monorepo
+```text
+starian/
+├── api/                    # BFF NestJS + IA
+├── spa-people/             # Microfrontend Vue 3 (Gestão de Talentos)
+├── root-config/            # Orquestrador Single-SPA (O Maestro)
+├── docker-compose.yml      # Infra completa
+└── .env                    # Variáveis Ambientais
+```
