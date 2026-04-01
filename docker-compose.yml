@@ -13,11 +13,6 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-postgres}"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   api:
     build:
@@ -35,8 +30,7 @@ services:
       GEMINI_API_KEY: ${GEMINI_API_KEY}
       NODE_ENV: production
     depends_on:
-      db:
-        condition: service_healthy
+      - db
     restart: unless-stopped
 
   spa-people:
@@ -48,6 +42,18 @@ services:
       - "8080:8080"
     depends_on:
       - api
+    restart: unless-stopped
+
+  root-config:
+    build:
+      context: .
+      dockerfile: root-config/Dockerfile
+    container_name: starian_root
+    ports:
+      - "9000:9000"
+    depends_on:
+      - api
+      - spa-people
     restart: unless-stopped
 
 volumes:

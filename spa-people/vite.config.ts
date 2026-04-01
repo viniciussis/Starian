@@ -9,18 +9,32 @@ import vitePluginSingleSpa from 'vite-plugin-single-spa'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
-    vueDevTools(),
-    tailwindcss(),
     vitePluginSingleSpa({
       type: 'mife',
       serverPort: 8080,
-      spaEntryPoint: 'src/main.ts'
-    })
+      spaEntryPoints: 'src/main.ts',
+    }),
+    vue(),
+    vueDevTools(),
+    tailwindcss(),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+    },
+  },
+  server: {
+    port: 8080,
+    cors: true,
+    origin: 'http://localhost:8080',
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
     },
   },
 })

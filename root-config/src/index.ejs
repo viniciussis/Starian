@@ -10,23 +10,26 @@
   <!-- Motor de carregamento de módulos do Single-SPA -->
   <script src="https://unpkg.com/systemjs@6.15.1/dist/system.min.js"></script>
   <script src="https://unpkg.com/systemjs@6.15.1/dist/extras/amd.min.js"></script>
+  <script src="https://unpkg.com/systemjs@6.15.1/dist/extras/module-types.min.js"></script>
 
-  <!-- Import Map Principal: libs compartilhadas via CDN -->
+  <!-- Import Map Principal: libs compartilhadas e apps remotos -->
   <script type="systemjs-importmap">
     {
       "imports": {
-        "single-spa": "https://unpkg.com/single-spa@6.0.3/lib/system/single-spa.min.js"
+        "single-spa": "https://unpkg.com/single-spa@6.0.3/lib/es5/system/single-spa.min.js",
+        "@starian/root-config": "/starian-root-config.js",
+        "@starian/spa-people": "http://localhost:8080/assets/main.js"
       }
     }
   </script>
 
-  <!-- Import Map Local: aponta para os microfrontends em dev -->
+  <!-- Import Map Local: Sobrescreve URLs para development se necessário -->
   <% if (isLocal) { %>
   <script type="systemjs-importmap">
     {
       "imports": {
         "@starian/root-config": "http://localhost:9000/starian-root-config.js",
-        "@starian/spa-people": "http://localhost:8080/@vite-plugin-single-spa/entry.js"
+        "@starian/spa-people": "http://localhost:8080/src/main.ts"
       }
     }
   </script>

@@ -32,5 +32,12 @@ module.exports = (webpackConfigEnv, argv) => {
         },
       }),
     ],
+    devServer: {
+      port: 9000,
+      historyApiFallback: true,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
+    },
   });
 };
