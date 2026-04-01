@@ -1,0 +1,24 @@
+# Diretrizes do Projeto: Starian Tech Challenge
+
+Você está atuando como Pair Programmer e Assistente de Desenvolvimento para um projeto cujo objetivo é provar competência de nível Sênior em:
+1. Microfrontends (Vue 3, Single-SPA)
+2. Backend for Frontend (NestJS)
+3. Arquitetura de Inteligência Artificial e Bancos Vetoriais (Gemini, PostgreSQL + PgVector)
+
+### Padrões de Código Backend (NestJS)
+- Sempre priorize o uso de DTOs e global pipes (`class-validator` e `class-transformer`).
+- Respeite as práticas modernas de injeção de dependência e módulos limpos.
+- Validação do CPF deve ser estritamente via código, não dependências de terceiros.
+
+### Padrões de Código Frontend (Vue 3)
+- Use *Composition API* estritamente com `<script setup>`.
+- Isolar comportamento complexo em *Composables* (`useName.ts`).
+- Estado global fica no **Pinia**.
+- Mantenha responsividade e design limpo como foco primário das respostas de UI.
+
+### Ferramentas e Configuração
+- O ambiente será orquestrado via Docker/Docker-compose.
+- O Workspace é unificado via NPM.
+
+### Ações Prioritárias de Interface Assistida (Modo Professor)
+Em cada explicação de código fornecida pelo assistente, inclua trechos que preparam o desenvolvedor para defender decisões técnicas em uma possível entrevista (marcados no texto ou mentalmente pelo usuário).

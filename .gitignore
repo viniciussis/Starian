@@ -1,0 +1,29 @@
+node_modules/
+dist/
+build/
+
+# Variáveis de ambiente — NUNCA subir ao repositório
+.env
+.env.local
+.env.production
+.env.*.local
+*.env
+
+# Artefatos de build
+.DS_Store
+*.log
+coverage/
+
+# Editores e IDEs
+.cursor/
+.vscode/
+.idea/
+
+# Chaves e certificados
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Arquivos gerados pelo Vite/Webpack
+*.local

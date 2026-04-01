@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+:root {
+  --primary-color: #0C2232; /* Azul Escuro Starian */
+  --secondary-color: #D6DFE7; /* Cinza Claro */
+  --bg-dark: #000000;
+  --bg-card: #090909;
+  --bg-card-hover: #0C0C0C;
+}
+
+html, body, #app {
+  height: 100%;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--secondary-color);
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Starian Master Portal</title>
+
+  <!-- Motor de carregamento de módulos do Single-SPA -->
+  <script src="https://unpkg.com/systemjs@6.15.1/dist/system.min.js"></script>
+  <script src="https://unpkg.com/systemjs@6.15.1/dist/extras/amd.min.js"></script>
+
+  <!-- Import Map Principal: libs compartilhadas via CDN -->
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "single-spa": "https://unpkg.com/single-spa@6.0.3/lib/system/single-spa.min.js"
+      }
+    }
+  </script>
+
+  <!-- Import Map Local: aponta para os microfrontends em dev -->
+  <% if (isLocal) { %>
+  <script type="systemjs-importmap">
+    {
+      "imports": {
+        "@starian/root-config": "http://localhost:9000/starian-root-config.js",
+        "@starian/spa-people": "http://localhost:8080/@vite-plugin-single-spa/entry.js"
+      }
+    }
+  </script>
+  <% } %>
+
+  <!-- Template de rotas do Single-SPA Layout -->
+  <template id="single-spa-layout">
+    <single-spa-router>
+      <main>
+        <route default>
+          <application name="@starian/spa-people"></application>
+        </route>
+      </main>
+    </single-spa-router>
+  </template>
+</head>
+
+<body>
+  <script>
+    System.import('@starian/root-config');
+  </script>
+</body>
+
+</html>
